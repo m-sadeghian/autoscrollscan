@@ -1,0 +1,16 @@
+name: build
+on: [workflow_dispatch, push]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install mss opencv-python-headless numpy pillow pyinstaller
+      - run: pyinstaller --onefile --noconsole --name ScrollCapture scroll_capture.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ScrollCapture
+          path: dist/ScrollCapture.exe
